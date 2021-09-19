@@ -4,6 +4,13 @@
 #include <string.h>
 #include "math.h"
 
+/*          PINOUT:
+ *      VIN -> 3.3V
+ *      GND -> GND
+ *      SCL -> B6 STM
+ *      SDA -> B7 STM
+ */
+
 I2C_HandleTypeDef hi2c1;
 uint8_t SensorAddressWrite = 0x76 << 1 | 0x00;
 uint8_t SensorAddressRead = 0x76 << 1 | 0x01;
@@ -58,7 +65,7 @@ void readValue(float *pressure, float *temperature)
 
         HAL_Delay(200);
 
-        //Citanje P iz registra
+    //Citanje P iz registra
     HAL_I2C_Master_Transmit(&hi2c1, sensorAddressWrite, sensorMode, 2, HAL_MAX_DELAY);        //Recimo mu da zelimo citanje, saljemo da zelimo prvo pressure pomocu SensorMode
     HAL_Delay(1000);
     HAL_I2C_Master_Receive(&hi2c1, sensorAddressRead  , data_read, 9, HAL_MAX_DELAY);         //Citamo 9 vrednosti od senzora, poredjane u obliku 2 vrednosti + CRC, 1., 2., 4. vrednost vezane za pritisak, 6. i 7. za temp 
